@@ -16,7 +16,9 @@
     "fuzzy": "^0.1.1",
     "json5": "^0.4.0",
     "mongoose": "^4.4.8",
-    "restify": "^3.0.3"
+    "promise": "^7.1.1",
+    "restify": "^3.0.3",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "mocha": "^2.2.5",

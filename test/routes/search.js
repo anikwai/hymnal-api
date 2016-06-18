@@ -6,7 +6,7 @@ var should  = require('chai').should(),
 
 describe("GET /search", function () {
 
-  it('should return { "result": ["Alas and did"] }', function (done) {
+  it('should return { "results": ["Alas and did"] }', function (done) {
     request(baseURL)
       .get('/search')
       .query({keyword: 'Alas'})
@@ -18,7 +18,7 @@ describe("GET /search", function () {
 
         res.body.should.be.an('object');
         res.body.should.have.ownProperty('results');
-        res.body.results[0].should.equal("Alas and did");
+        res.body.results[0].title.should.match(/Alas and did/i);
 
         return done();
       });
