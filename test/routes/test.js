@@ -16,11 +16,11 @@ describe("/test", function () {
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
-        
+
         res.body.should.be.an('object');
         res.body.should.have.ownProperty('result');
         res.body.result.should.equal("test");
-        
+
         return done();
       });
   });

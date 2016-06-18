@@ -4,6 +4,8 @@ This project was generated using [yo restify-server generator](
 https://github.com/vsimonian/generator-restify-server) version
 0.1.1.
 
+Provides the trinity hymnal.
+
 ## What's included
 
 This project uses:
