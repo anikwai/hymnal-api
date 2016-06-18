@@ -38,7 +38,11 @@ module.exports = function(server, logger) {
 
     // find junk
     Hymn.find({
-      title: new RegExp(keyword)
+      $or: [
+        {title: new RegExp(keyword, 'i')},
+        {lyrics: new RegExp(keyword, 'i')},
+        {author: new RegExp(keyword, 'i')},
+      ]
     }, function(err, data) {
       results = data
       res.send({
