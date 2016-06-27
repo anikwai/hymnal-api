@@ -7,6 +7,10 @@ var restify = require('restify')
 var config = require('config')
 var routes = require('./routes')
 
+var mongoose = require('mongoose')
+var url = 'mongodb://localhost'
+mongoose.connect(url + '/test')
+require('./model/hymn')
 
 exports.createServer = createServer;
 
@@ -15,6 +19,14 @@ exports.createServer = createServer;
  * @return the created server
  */
 function createServer(logger) {
+
+  var db = mongoose.connection
+  db.on('error', function() {
+    logger.info(arguments)
+  })
+  db.once('open', function() {
+    logger.info('connected to db.')
+  })
 
   var settings = {
     name: (config.has('server.name') && config.get('server.name')) ? config.get('server.name') : require(path.join(__dirname, 'package')).name

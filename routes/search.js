@@ -1,36 +1,7 @@
 var mongoose = require('mongoose')
-var Schema = mongoose.Schema
-var url = 'mongodb://localhost'
-mongoose.connect(url + '/test')
-
-var HymnSchema = new Schema({
-  title: {
-    type: String
-  },
-  author: {
-    type: String
-  },
-  number: {
-    type: Number
-  },
-  lyrics: {
-    type: String
-  },
-})
+var Hymn = mongoose.model('Hymn')
 
 module.exports = function(server, logger) {
-
-  // Mongo db connection info
-  var Hymn = mongoose.model('Hymn', HymnSchema)
-  var db = mongoose.connection
-  db.on('error', function() {
-    logger.info(arguments)
-  })
-  db.once('open', function() {
-    logger.info('connected to db.')
-  })
-
-  var titles = ["Alas and did", "Come thou fount"]
 
   // Sample route
   server.get('/search', function(req, res, next) {
@@ -38,11 +9,13 @@ module.exports = function(server, logger) {
 
     // find junk
     Hymn.find({
-      $or: [
-        {title: new RegExp(keyword, 'i')},
-        {lyrics: new RegExp(keyword, 'i')},
-        {author: new RegExp(keyword, 'i')},
-      ]
+      $or: [{
+        title: new RegExp(keyword, 'i')
+      }, {
+        lyrics: new RegExp(keyword, 'i')
+      }, {
+        author: new RegExp(keyword, 'i')
+      }, ]
     }, function(err, data) {
       results = data
       res.send({
