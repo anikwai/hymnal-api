@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var _ = require('underscore')
-var request = require('request')
+var fs = require('fs')
 
 // set defauls
 var url = 'mongodb://localhost/'
@@ -25,54 +25,43 @@ var HymnSchema = new Schema({
   },
 })
 
-mongoose.connect(url + db)
 var Model = mongoose.model(modelName, HymnSchema)
+mongoose.connect(url + db)
 Model.remove({}, loga)
+mongoose.connection.close()
 
 // get data
 var getData = function() {
 
-  var counter = 0;
-  var hymns = []
-  var interval = setInterval(function() {
+  var hymns_text = fs.readFileSync(__dirname + '/all_hymns.html', 'utf8').split('=HYMN END=')
 
-    request('http://www.opc.org/hymn.html?hymn_id=' + counter, (err, res, body) => {
-      try {
-        var opening = '<p class="nav"><a href="/hymn.html?target=archive">Archive of All Entries</a> </p>'
-        var ending = '<div class="printMe">'
-        body = body.slice(body.indexOf(opening), body.indexOf(ending))
-        console.log(body)
-        console.log('=HYMN END=')
+  hymns_text.forEach(function(hh) {
+    var hymn = {}
 
-/*
-        var HtmlDom = require('htmldom')
-        var html = new HtmlDom(body)
-        var text = ""
-          // console.log(html.$('p')[1].children)
-        for (var c of html.$('p')[1].children) {
-          // console.log(c)
-          text += c.value ? c.value : ''
-        }
-        var hymn = {
-          title: html.$('h3')['0'].children[0].value,
-          text: text.replace(/\r/g, '\n')
-        }
-        console.log(hymn)
-        hymns.push(hymn)
-        */
-      } catch (e) {
-
-      }
-    })
-
-    counter++;
-
-    if (counter > 859) {
-    // if (counter > 10) {
-      clearInterval(interval)
-      // next(hymns)
+    var heading = hh.match(/h3>(.*[a-z])\&.*;(.*)<\/h3/)
+    if (heading) {
+      hymn.title = heading[1]
+      hymn.author = heading[2]
     }
-  }, 100);
+
+    var meta = hh.match(/p>\n(.*), #([0-9]{1,3})<br/)
+    if (meta) {
+      hymn.source = meta[1]
+      hymn.hymn_number = meta[2]
+    }
+
+    var text = hh.split(/\n\n<p>\n.*<br\s\/>\n/)
+    if (text[1]) {
+      var without_tags = text[1].split(/<\/p>/)[0].replace(/<br \/>/g, '')
+      hymn.text = without_tags
+    }
+    // if (!hymn.title || !hymn.author) console.log(hymn)
+
+  })
+
+
+  // console.log(hymn)
+  // hymns.push(hymn)
 }
 
 function next(hymns) {
