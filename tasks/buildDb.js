@@ -17,7 +17,7 @@ var HymnSchema = new Schema({
   author: {
     type: String
   },
-  number: {
+  hymn_number: {
     type: Number
   },
   lyrics: {
@@ -28,13 +28,15 @@ var HymnSchema = new Schema({
 var Model = mongoose.model(modelName, HymnSchema)
 mongoose.connect(url + db)
 Model.remove({}, loga)
-mongoose.connection.close()
+// mongoose.connection.close()
+
 
 // get data
 var getData = function() {
 
   var hymns_text = fs.readFileSync(__dirname + '/all_hymns.html', 'utf8').split('=HYMN END=')
-
+  var hymns = []
+  var counter = 0
   hymns_text.forEach(function(hh) {
     var hymn = {}
 
@@ -55,13 +57,21 @@ var getData = function() {
       var without_tags = text[1].split(/<\/p>/)[0].replace(/<br \/>/g, '')
       hymn.text = without_tags
     }
-    // if (!hymn.title || !hymn.author) console.log(hymn)
+    // Some just don't have authors
+    if (!hymn.title || /*!hymn.author ||*/ !hymn.text) {
+      //counter++;
+      // console.log(hymn)
+    } else {
+      hymns.push(hymn)
+    }
 
+    // console.log(hymn)
   })
 
 
-  // console.log(hymn)
+  // console.log(counter)
   // hymns.push(hymn)
+  next(hymns)
 }
 
 function next(hymns) {
@@ -76,6 +86,7 @@ function next(hymns) {
   })
 
   Promise.all(p).then(function() {
+    console.log('Done')
     mongoose.connection.close()
   })
 

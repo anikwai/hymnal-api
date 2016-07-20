@@ -15,14 +15,30 @@ module.exports = function(server, logger) {
         lyrics: new RegExp(keyword, 'i')
       }, {
         author: new RegExp(keyword, 'i')
+      }, {
+        hymn_number: new RegExp(keyword, 'i')
       }, ]
     }, function(err, data) {
-      results = data
+      var results = data
       res.send({
         'results': results
       })
       return next();
     })
   });
+
+  /* TODO * /
+  server.get('/hymn/:id', function(req, res, next) {
+    Hymn.find({
+      id: id
+    }, function(err, data) {
+      var results = data
+      res.send({
+        'results': results
+      })
+      return next();
+    })
+  })
+  /* */
 
 };

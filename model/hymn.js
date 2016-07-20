@@ -8,8 +8,8 @@ var HymnSchema = new Schema({
   author: {
     type: String
   },
-  number: {
-    type: Number
+  hymn_number: {
+    type: String
   },
   lyrics: {
     type: String
