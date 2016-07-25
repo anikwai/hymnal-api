@@ -102,16 +102,15 @@ var getData = function() {
   // console.log(counter)
   // hymns.push(hymn)
   // Hymns have unique numbers, thus!
-  // next(hymns)
-  console.log('all hymns:', Object.keys(hymns).length);
-
+  next(hymns)
 }
 
 function next(hymns) {
 
   // push data
   var p = []
-  hymns.forEach(function(o) {
+  Object.keys(hymns).forEach(function(key) {
+    var o = hymns[key]
     // console.log(o);
     var instance = new Model()
     _.extend(instance, o)

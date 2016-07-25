@@ -14,6 +14,9 @@ var HymnSchema = new Schema({
   lyrics: {
     type: String
   },
+  first_line: {
+    type: String
+  },
 })
 
 mongoose.model('Hymn', HymnSchema);

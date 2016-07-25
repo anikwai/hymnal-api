@@ -3,7 +3,6 @@ var Hymn = mongoose.model('Hymn')
 
 module.exports = function(server, logger) {
 
-  // Sample route
   server.get('/search', function(req, res, next) {
     var keyword = req.query.keyword
 
@@ -18,7 +17,7 @@ module.exports = function(server, logger) {
       }, {
         hymn_number: new RegExp(keyword, 'i')
       }, ]
-    }, function(err, data) {
+    }, 'title hymn_number', function(err, data) {
       var results = data
       res.send({
         'results': results
@@ -27,10 +26,9 @@ module.exports = function(server, logger) {
     })
   });
 
-  /* TODO * /
   server.get('/hymn/:id', function(req, res, next) {
     Hymn.find({
-      id: id
+      _id: req.params.id
     }, function(err, data) {
       var results = data
       res.send({
@@ -39,6 +37,5 @@ module.exports = function(server, logger) {
       return next();
     })
   })
-  /* */
 
 };
