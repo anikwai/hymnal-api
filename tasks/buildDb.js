@@ -23,19 +23,29 @@ var HymnSchema = new Schema({
   lyrics: {
     type: String
   },
+  first_line: {
+    type: String
+  },
 })
 
 var Model = mongoose.model(modelName, HymnSchema)
 mongoose.connect(url + db)
 Model.remove({}, loga)
-// mongoose.connection.close()
+  // mongoose.connection.close()
 
 
 // get data
 var getData = function() {
 
   var hymns_text = fs.readFileSync(__dirname + '/all_hymns.html', 'utf8').split('=HYMN END=')
-  var hymns = []
+  var hymns = {
+    // number: {
+    //   title:
+    //   auther:
+    //   lyrics:
+    //   first_line:
+    // }
+  }
   var counter = 0
   hymns_text.forEach(function(hh) {
     var hymn = {}
@@ -46,32 +56,55 @@ var getData = function() {
       hymn.author = heading[2]
     }
 
-    var meta = hh.match(/p>\n(.*), #([0-9]{1,3})<br/)
-    if (meta) {
-      hymn.source = meta[1]
-      hymn.hymn_number = meta[2]
+    var hymnNumberMatch = hh.match(/Original  Trinity Hymnal, #([0-9]+)/)
+    if (hymnNumberMatch) {
+      hymn.hymn_number = hymnNumberMatch[1]
     }
 
-    var text = hh.split(/\n\n<p>\n.*<br\s\/>\n/)
-    if (text[1]) {
-      var without_tags = text[1].split(/<\/p>/)[0].replace(/<br \/>/g, '')
-      hymn.text = without_tags
+    // Hymn content
+    var lyrics = hh.split(/\n\n<p>\n.*<br\s\/>\n/)
+    if (lyrics[1]) {
+      hymn.lyrics = ''
+
+      // stanzas
+      var content = hh.split("Original  Trinity")
+      content = content[1].split("\n<br />\n")
+      content.shift()
+      content.pop()
+      content.forEach(function(stanza) {
+        hymn.lyrics += stanza.replace(/<br \/>/g, '') + '\n\n'
+      })
+
+      hymn.first_line = hymn.lyrics.split('\n')[0]
     }
     // Some just don't have authors
-    if (!hymn.title || /*!hymn.author ||*/ !hymn.text) {
-      //counter++;
-      // console.log(hymn)
-    } else {
-      hymns.push(hymn)
+    if (hymn.hymn_number) {
+      if (hymn.title && /*!hymn.author ||*/ hymn.lyrics) {
+
+        // duplicates?
+        if (!hymns[hymn.title]) {
+          hymns[hymn.title + "__" + hymn.author] = hymn
+        } else {
+          // ignore duplicates for now.
+          // console.error('dup: ', hymn.title);
+        }
+      } else {
+        // console.log('not put: ', hymn)
+      }
     }
 
     // console.log(hymn)
   })
 
 
+  // Validate parsing.
+
   // console.log(counter)
   // hymns.push(hymn)
-  next(hymns)
+  // Hymns have unique numbers, thus!
+  // next(hymns)
+  console.log('all hymns:', Object.keys(hymns).length);
+
 }
 
 function next(hymns) {
@@ -79,7 +112,7 @@ function next(hymns) {
   // push data
   var p = []
   hymns.forEach(function(o) {
-    console.log(o);
+    // console.log(o);
     var instance = new Model()
     _.extend(instance, o)
     p.push(instance.save(loga))

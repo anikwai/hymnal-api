@@ -39,6 +39,7 @@ function createServer(logger) {
   server.use(restify.acceptParser(server.acceptable));
   server.use(restify.queryParser());
   server.use(restify.bodyParser());
+  server.use(restify.CORS());
 
   server.on('NotFound', function(req, res, next) {
     if (logger) {
