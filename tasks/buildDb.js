@@ -10,6 +10,7 @@ var fs = require('fs')
 require('../model/hymn')
 
 // set defauls
+// TODO: update?
 var url = 'mongodb://localhost/'
 var db = 'test'
 

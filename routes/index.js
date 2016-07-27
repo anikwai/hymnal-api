@@ -13,7 +13,6 @@ function initialize(server, logger) {
 };
 
 var routes = [
-  'test',
   'search'
 ];
 

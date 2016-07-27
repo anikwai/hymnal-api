@@ -3,10 +3,12 @@ var Hymn = mongoose.model('Hymn')
 
 module.exports = function(server, logger) {
 
+  /**
+   * Searches the mongo database for hymns that match the keyword(s)
+   */
   server.get('/search', function(req, res, next) {
     var keyword = req.query.keyword
 
-    // find junk
     Hymn.find({
       $or: [{
         title: new RegExp(keyword, 'i')
@@ -26,6 +28,9 @@ module.exports = function(server, logger) {
     })
   });
 
+  /**
+   * Gets the hymn with the specified id.
+   */
   server.get('/hymn/:id', function(req, res, next) {
     Hymn.find({
       _id: req.params.id
