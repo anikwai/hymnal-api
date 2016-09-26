@@ -1,5 +1,3 @@
-/* global process:true, __dirname:true */
-
 'use strict';
 
 var path = require('path')
@@ -7,8 +5,11 @@ var restify = require('restify')
 var config = require('config')
 var routes = require('./routes')
 
-var mongoose = require('mongoose')
+// use 'dotenv' for environment loading.
 var url = 'mongodb://localhost'
+
+// TODO: consider moving mongo instance to mLab for free db mgmt.
+var mongoose = require('mongoose')
 mongoose.connect(url + '/test')
 require('./model/hymn')
 
@@ -42,16 +43,15 @@ function createServer(logger) {
   server.use(restify.CORS());
 
   server.on('NotFound', function(req, res, next) {
-    if (logger) {
-      logger.debug('404', 'No route that matches request for ' + req.url);
-    }
-    res.send(404, req.url + ' was not found');
+    res.send(new restify.NotFoundError())
   });
 
   if (logger) server.on('after', restify.auditLogger({
     log: logger
   }));
 
+
+  // TODO: require single routes.js file that will setup each route.
   routes(server, logger);
 
   return server;

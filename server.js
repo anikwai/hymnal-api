@@ -1,5 +1,3 @@
-/* global process:true */
-
 'use strict';
 
 var path = require('path'),
@@ -10,7 +8,7 @@ var path = require('path'),
 
 // if process.env.NODE_ENV has not been set, default to development
 var NODE_ENV = process.env.NODE_ENV || 'development';
-  
+
 exports.run = run;
 
 
@@ -26,7 +24,7 @@ function spawnWorker (logger) {
 }
 
 function createCluster (logger) {
-  
+
   // Set up cluster and start servers
   if (cluster.isMaster) {
     var numCpus = require('os').cpus().length;
@@ -49,7 +47,7 @@ function createCluster (logger) {
       cluster.fork();
     });
 
-  } 
+  }
   // Worker processes
   else {
     spawnWorker(logger);

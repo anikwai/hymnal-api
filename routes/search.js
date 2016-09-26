@@ -1,6 +1,8 @@
 var mongoose = require('mongoose')
 var Hymn = mongoose.model('Hymn')
 
+// TODO: move this to a hymnCntrl.js that will export the search function and
+// any relevant CRUD methods.
 module.exports = function(server, logger) {
 
   /**
