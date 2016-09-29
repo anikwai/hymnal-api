@@ -6,8 +6,8 @@ var path = require('path'),
     app = require('./app'),
     logging = require('./logging');
 
-// if process.env.NODE_ENV has not been set, default to development
-var NODE_ENV = process.env.NODE_ENV || 'development';
+var NODE_ENV = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+require('dotenv').config()
 
 exports.run = run;
 

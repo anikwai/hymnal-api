@@ -1,14 +1,16 @@
-/**
- * Do NOT modify the values in this configuration file! Your changes may be
- * overwritten if and when you update to a newer version.
- */
 {
   server: {
+    name: 'Default Trinity Hymnal API App',
     port: 8000,
     cluster: true
   },
   logging: {
     dir: "logs",
     level: "debug"
+  },
+  database: {
+    host: "ds041566.mlab.com",
+    port: "41566",
+    name: "christian_songs"
   }
 }

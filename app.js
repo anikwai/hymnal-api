@@ -3,15 +3,16 @@
 var path = require('path')
 var restify = require('restify')
 var config = require('config')
-var routes = require('./routes')
 
-// use 'dotenv' for environment loading.
-var url = 'mongodb://localhost'
-
-// TODO: consider moving mongo instance to mLab for free db mgmt.
+// DB
+var db = config.get('database')
+var url = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${db.host}:${db.port}/${db.name}`
 var mongoose = require('mongoose')
-mongoose.connect(url + '/test')
-require('./model/hymn')
+mongoose.connect(url)
+require('./app/models/hymn')
+
+// Routes
+var routes = require('./app/routes')
 
 exports.createServer = createServer;
 
@@ -50,8 +51,7 @@ function createServer(logger) {
     log: logger
   }));
 
-
-  // TODO: require single routes.js file that will setup each route.
+  // Setup each route.
   routes(server, logger);
 
   return server;

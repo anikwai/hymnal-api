@@ -6,18 +6,17 @@ var mongoose = require('mongoose')
 var _ = require('underscore')
 var fs = require('fs')
 
+// Get environment configs
+require('dotenv').config()
+
 // DB Models
-require('../model/hymn')
-
-// set defauls
-// TODO: update?
-var url = 'mongodb://localhost/'
-var db = 'test'
-
-var Hymn = mongoose.model('Hymn')
-mongoose.connect(url + db)
+var url = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds041566.mlab.com:41566/christian_songs`
+console.log(`Connecting to ${url}`)
+var Hymn = require('../app/models/hymn')
+mongoose.connect(url)
 
 // Clear old data
+console.log(`Removing data.`)
 Hymn.remove({})
 
 // Get hymn list from somewhere.
@@ -27,7 +26,7 @@ var hymns = require('./data/all_hymns.json')
 var p = []
 Object.keys(hymns).forEach(function(key) {
   var o = hymns[key]
-    // console.log(o);
+  console.log(o);
   var instance = new Hymn()
   _.extend(instance, o)
   p.push(instance.save())
