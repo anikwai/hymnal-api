@@ -8,7 +8,6 @@ var config = require('config')
 var db = config.get('database')
 var url = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${db.host}:${db.port}/${db.name}`
 var mongoose = require('mongoose')
-mongoose.connect(url)
 require('./app/models/hymn')
 
 // Routes
@@ -22,6 +21,7 @@ exports.createServer = createServer;
  */
 function createServer(logger) {
 
+  mongoose.connect(url)
   var db = mongoose.connection
   db.on('error', function() {
     logger.info(arguments)

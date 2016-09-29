@@ -4,7 +4,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "start": "forever start --append -o ./forever.log -e ./forever.log server.js",
+    "start": "NODE_ENV=production forever start --append -o ./forever.log -e ./forever.log server.js",
     "stop": "forever stop server.js",
     "status": "forever list",
     "nodemon": "nodemon server.js -i logs",

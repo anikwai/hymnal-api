@@ -18,7 +18,7 @@ function spawnWorker (logger) {
 
   // start listening
   var port = config.get('server.port');
-  server.listen(port, function () {
+  server.listen(port, process.env.SERVER_IP, function () {
     logger.info('%s listening at %s', server.name, server.url);
   });
 }
