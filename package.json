@@ -7,24 +7,25 @@
     "start": "forever start --append -o ./forever.log -e ./forever.log server.js",
     "stop": "forever stop server.js",
     "status": "forever list",
-    "test": "mocha -R spec test/server.js test/**/*.js"
+    "nodemon": "nodemon server.js -i logs",
+    "test": "echo \"Not implemented!\""
   },
   "dependencies": {
     "bunyan": "^1.4.0",
     "config": "^1.14.0",
     "dotenv": "^2.0.0",
     "forever": "^0.14.1",
-    "fuzzy": "^0.1.1",
     "json5": "^0.4.0",
     "mongoose": "^4.4.8",
     "restify": "^3.0.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "mocha": "^2.2.5",
+    "bunyan-prettystream": "hadfieldn/node-bunyan-prettystream",
     "chai": "^3.0.0",
-    "supertest": "^1.0.1",
-    "bunyan-prettystream": "hadfieldn/node-bunyan-prettystream"
+    "mocha": "^2.2.5",
+    "nodemon": "^1.10.2",
+    "supertest": "^1.0.1"
   },
   "engine": {
     "node": ">=0.10"
