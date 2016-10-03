@@ -16,8 +16,8 @@ var Hymn = require('../app/models/hymn')
 mongoose.connect(url)
 
 // Clear old data
-console.log(`Removing data.`)
-Hymn.remove({})
+// console.log(`Removing data.`)
+// Hymn.remove({})
 
 // Get hymn list from somewhere.
 var hymns = require('./data/all_hymns.json')
@@ -26,7 +26,7 @@ var hymns = require('./data/all_hymns.json')
 var p = []
 Object.keys(hymns).forEach(function(key) {
   var o = hymns[key]
-  console.log(o);
+  // console.log(o);
   var instance = new Hymn()
   _.extend(instance, o)
   p.push(instance.save())
