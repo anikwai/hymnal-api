@@ -10,6 +10,7 @@ var db = config.get('database')
 var url = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${db.host}:${db.port}/${db.name}`
 var mongoose = require('mongoose')
 require('./app/models/hymn')
+require('./app/models/feedback')
 
 // Routes
 var routes = require('./app/routes')

@@ -1,3 +1,6 @@
+'use strict';
+
+var logger
 module.exports = {
   init: init,
   home: home,

@@ -9,8 +9,8 @@
     level: "debug"
   },
   database: {
-    host: "ds041566.mlab.com",
-    port: "41566",
+    host: "localhost",
+    port: "9001",
     name: "christian_songs"
   }
 }

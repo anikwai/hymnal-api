@@ -1,39 +1,63 @@
-# trinity-hymnal-api
+# trinity-hymnal-api #
+> Serves the trinity hymnal through an API.
 
-This project was generated using [yo restify-server generator](
-https://github.com/vsimonian/generator-restify-server) version
-0.1.1.
+## API ##
+> http://www.hymnal-api.kingnebby.com/hymn
 
-Provides the trinity hymnal.
+### Basic Usage ###
 
-## What's included
+Supports any query params as attribute queries.
+```bash
+http://www.hymnal-api.kingnebby.com/hymn?hymn_number=100
+http://www.hymnal-api.kingnebby.com/hymn?title=it%20is%20well
+```
 
-This project uses:
+Valid attributes are `hymn_number`, `title`, `author`, `first_line`, and `lyrics`.
+All parameters, even additional ones, are put together in an or query.
 
-- [config](https://github.com/lorenwest/node-config) and [json5](
-  http://json5.org) for configuration
-- [bunyan](https://github.com/trentm/node-bunyan) for logging
-- [mocha](http://visionmedia.github.io/mocha/) and [supertest](
-  https://github.com/visionmedia/supertest) for testing
-- [cluster](http://nodejs.org/docs/latest/api/cluster.html) for managing workers
 
-## Configuring
+### Additional Query Params ###
+`expanded=true` All query parameters values are applied to searching the lyrics field as independent keywords.
+```bash
+http://www.hymnal-api.kingnebby.com/hymn?title=nor%20fear&expanded=true
+```
 
-See `config/local.json5.example` for a sample to get you started. If you need to
-change any defaults, make a copy named `local.json5` and change it to your
-liking.
+`phrase` The value of the phrase param is used to search for that sequence of words on the lyrics field.
+```bash
+http://www.hymnal-api.kingnebby.com/hymn?phrase=began%20the%20life%20divine
+```
 
-If you want to have different configuration properties for different
-environments, create configuration files named after the environments they are
-for. For example, to create a configuration file that will be used when
-`NODE_ENV` is `development`, create `development.json5`.
+## Contribute ##
 
-## Starting and stopping
+### First Time Setup ###
 
-Running `npm start` will start the server using [forever](
-https://github.com/nodejitsu/forever), and running `npm stop` will stop it.
-`npm run-script list` will list the forever processes that are running.
+```javascript
+npm install
+```
 
-## Testing
+*MongoDB*
+You will need an instance of mongo db to test against. [mlab](www.mlab.com) is a good place to start.
 
-Running `npm test` will execute the tests in the `test` directory using mocha.
+*[config]*(https://github.com/lorenwest/node-config)
+Ensure you have a development config setup.
+- Copy `config/default.json5` to `config/development.json5` and specify your application details.
+- Set `NODE_ENV=development` to pick up your config file.
+
+*[dotenv]*(https://github.com/motdotla/dotenv)
+Ensure you setup your db/server information. 
+- Copy the sample file `.env.example` to `.env` and tailor to your environment.
+
+*Data Load*
+```javascript
+node tasks/buildDb.js
+```
+
+*Run!!*
+```javascript
+npm run nodemon
+```
+
+## Project ##
+[Trello](https://trello.com/b/qqGViEvF/trinity-hymnal-mobile) is used for task tracking.
+
+Author danielavilla02@gmail.com
