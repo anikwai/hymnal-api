@@ -2,6 +2,7 @@
 
 var path = require('path')
 var restify = require('restify')
+var redirect = require('restify-redirect')
 var config = require('config')
 
 // DB
@@ -42,6 +43,7 @@ function createServer(logger) {
   server.use(restify.queryParser());
   server.use(restify.bodyParser());
   server.use(restify.CORS());
+  server.use(redirect())
 
   server.on('NotFound', function(req, res, next) {
     res.send(new restify.NotFoundError())

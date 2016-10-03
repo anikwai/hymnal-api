@@ -13,25 +13,47 @@ function init(opts) {
 }
 
 function getAll(req, res) {
-  var keyword = req.query.keyword
-  if (keyword) {
-    Hymn.find({
-      $or: [{
-        title: new RegExp(keyword, 'i')
-      }, {
-        lyrics: new RegExp(keyword, 'i')
-      }, {
-        author: new RegExp(keyword, 'i')
-      }, {
-        hymn_number: new RegExp(keyword, 'i')
-      }, ]
-    }, 'title hymn_number', returnResults)
+  // Build MongoQuery object
+  var mQuery = {
+    $or: []
+  }
+
+  // Build each one as an $or matching everything
+  var searchTerms = []
+  Object.keys(req.query).forEach(function(attr) {
+    var value = req.query[attr]
+    searchTerms.push(value)
+    var attrQuery = {}
+    attrQuery[attr] = new RegExp(value, 'i')
+    mQuery.$or.push(attrQuery)
+  })
+
+  // Include all lyrics in search.
+  if (Boolean(req.query.expanded) == true) {
+    var regExp = new RegExp('(' + searchTerms.join('|') + ')', 'i')
+    mQuery.$or.push({'lyrics': regExp})
+  }
+
+  // If looking for a phrase
+  if (req.query.phrase) {
+    var words = req.query.phrase.split(" ")
+    var regex = words.join('[!()\\\"+?,\\s-_\\\':;\\n]*')
+    var regExp = new RegExp(regex, 'i')
+    mQuery.$or.push({'lyrics': regExp})
+  }
+
+  if (mQuery.$or.length > 0) {
+    Hymn
+      .find(mQuery, 'title hymn_number')
+      .exec(returnResults)
   } else {
     Hymn.find({}, returnResults)
   }
 
   function returnResults(err, data) {
-    var results = data
+    var results = data.sort(function(a, b) {
+      return Number(a.hymn_number) - Number(b.hymn_number)
+    })
     res.send({
       'results': results
     })
@@ -43,9 +65,6 @@ function getById(req, res) {
   Hymn.findOne({
     _id: req.params.id
   }, function(err, data) {
-    var results = data
-    res.send({
-      'results': results
-    })
+    res.send(data)
   })
 }

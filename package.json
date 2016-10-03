@@ -11,13 +11,16 @@
     "test": "echo \"Not implemented!\""
   },
   "dependencies": {
-    "bunyan": "^1.4.0",
-    "config": "^1.14.0",
+    "bunyan": "^1.8.1",
+    "bunyan-prettystream": "github:hadfieldn/node-bunyan-prettystream",
+    "config": "^1.21.0",
     "dotenv": "^2.0.0",
     "forever": "^0.14.1",
     "json5": "^0.4.0",
-    "mongoose": "^4.4.8",
+    "mocha": "^2.5.3",
+    "mongoose": "^4.6.2",
     "restify": "^3.0.3",
+    "restify-redirect": "^1.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
