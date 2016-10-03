@@ -2,7 +2,7 @@
 > Serves the trinity hymnal through an API.
 
 ## API ##
-> http://hymnal-api.kingnebby.com/hymn
+Runs at http://hymnal-api.kingnebby.com/hymn
 
 ### Basic Usage ###
 
