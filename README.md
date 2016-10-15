@@ -8,13 +8,17 @@ Runs at http://hymnal-api.kingnebby.com/hymn
 
 Supports any query params as attribute queries.
 ```bash
-http://hymnal-api.kingnebby.com/hymn?hymn_number=100
-http://hymnal-api.kingnebby.com/hymn?title=it%20is%20well
+curl http://hymnal-api.kingnebby.com/hymn?hymn_number=100
+curl http://hymnal-api.kingnebby.com/hymn?title=it%20is%20well
 ```
 
 Valid attributes are `hymn_number`, `title`, `author`, `first_line`, and `lyrics`.
 All parameters, even additional ones, are put together in an or query.
 
+Retrieve hymn by id.
+```bash
+curl http://hymnal-api.kingnebby.com/hymn/57f1f4d879ef41223432c249
+```
 
 ### Additional Query Params ###
 **expanded** When `true`, all query parameters values are applied to searching the lyrics field as independent keywords.

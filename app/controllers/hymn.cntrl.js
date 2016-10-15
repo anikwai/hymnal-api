@@ -24,6 +24,7 @@ function getAll(req, res) {
   var searchTerms = []
   Object.keys(req.query).forEach(function(attr) {
     var value = req.query[attr]
+    if (attr == 'expanded') return;
     searchTerms.push(value)
     var attrQuery = {}
     attrQuery[attr] = new RegExp(value, 'i')

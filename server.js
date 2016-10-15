@@ -6,8 +6,8 @@ var path = require('path'),
     app = require('./app'),
     logging = require('./logging');
 
-var NODE_ENV = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 require('dotenv').config()
+var NODE_ENV = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 exports.run = run;
 
