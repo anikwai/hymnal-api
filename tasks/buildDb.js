@@ -20,15 +20,18 @@ mongoose.connect(url)
 // Hymn.remove({})
 
 // Get hymn list from somewhere.
-var hymns = require('./data/all_hymns.json')
+var hymns = require('trinity-hymnal-data')
 
 // Populate data.
 var p = []
-Object.keys(hymns).forEach(function(key) {
-  var o = hymns[key]
-  // console.log(o);
+hymns.forEach(function(hymn) {
   var instance = new Hymn()
-  _.extend(instance, o)
+  instance.title = hymn.title
+  instance.author = hymn.author
+  instance.hymn_number = hymn.number
+  instance.lyrics = hymn.lyrics
+  instance.first_line = hymn.first_line
+  instance.tune = hymn.tune
   p.push(instance.save())
 })
 
