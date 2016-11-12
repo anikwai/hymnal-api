@@ -17,7 +17,7 @@ function init(opts) {
 function getAll(req, res) {
   // Build MongoQuery object
   var mQuery = {
-    $or: []
+    $or: [],
   }
 
   // Build each one as an $or matching everything
@@ -31,18 +31,24 @@ function getAll(req, res) {
     mQuery.$or.push(attrQuery)
   })
 
-  // Include all lyrics in search.
-  if (Boolean(req.query.expanded) == true) {
-    var regExp = new RegExp('(' + searchTerms.join('|') + ')', 'i')
-    mQuery.$or.push({'lyrics': regExp})
-  }
-
   // If looking for a phrase
+  var words = []
   if (req.query.phrase) {
-    var words = req.query.phrase.split(" ")
+    words = req.query.phrase.split(" ")
     var regex = words.join('[!()\\\"+?,\\s-_\\\':;\\n]*')
     var regExp = new RegExp(regex, 'i')
     mQuery.$or.push({'lyrics': regExp})
+  }
+
+  // Include all words, searching in lyrics
+  if (Boolean(req.query.expanded) == true) {
+    var regExp = new RegExp('(' + searchTerms.join('|') + ')', 'i')
+    mQuery.$or.push({'lyrics': regExp})
+    var and = {$and: [] }
+    words.forEach(function(elem) {
+      and.$and.push({'lyrics': new RegExp(elem, 'i') })
+    });
+    mQuery.$or.push(and)
   }
 
   if (mQuery.$or.length > 0) {

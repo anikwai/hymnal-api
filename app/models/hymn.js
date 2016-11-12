@@ -18,6 +18,9 @@ var HymnSchema = new Schema({
   first_line: {
     type: String
   },
+  tune: {
+    type: String
+  },
 })
 
 // Ensure first line is populated

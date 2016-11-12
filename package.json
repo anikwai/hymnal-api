@@ -21,6 +21,7 @@
     "mongoose": "^4.6.2",
     "restify": "^3.0.3",
     "restify-redirect": "^1.0.0",
+    "trinity-hymnal-data": "^1.0.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
